@@ -1,6 +1,8 @@
 # Docker recipe for Osmium
 
-[Osmium](https://github.com/NLeSC/osmium) is the web service to the middleware library [Xenon](http://nlesc.github.io/Xenon). This docker image is a base image, do a local build (in `local` directory) to configure it correctly. In that directory place:
+[Osmium](https://github.com/NLeSC/osmium) is the web service to the middleware library [Xenon](http://nlesc.github.io/Xenon).
+
+This docker image, `nlesc/osmium`, is a base image, do a local build (in `local` directory) to configure it correctly. In that directory place:
 
     joblauncher.yml  # Osmium configuration
     ssh_key          # private SSH key without passphrase
