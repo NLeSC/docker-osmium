@@ -1,0 +1,6 @@
+# Ignore all local configuration
+*
+
+# Except this file and the Dockerfile
+!.gitignore
+!Dockerfile
