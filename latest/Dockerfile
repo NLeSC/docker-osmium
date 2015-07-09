@@ -18,6 +18,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
   && cd /usr/local/src/osmium \
   && mvn package \
   && cp target/osmium-?.?.?.jar /var/lib/osmium/osmium.jar \
+  && cp joblauncher.yml-dist /var/lib/osmium/joblauncher.yml \
   && apt-get --purge autoremove -y \
       openjdk-7-jdk \
       maven \
