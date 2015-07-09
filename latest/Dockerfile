@@ -25,14 +25,16 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/local/src/osmium ~/.m2
 
-COPY ./start.sh /var/lib/osmium/
+COPY ./start.sh /
 
 # Set permissions
 RUN groupadd -r osmium \
   && useradd -d /var/lib/osmium -g osmium osmium \
   && chown -R osmium:osmium /var/lib/osmium \
-  && chmod 0755 /var/lib/osmium/start.sh
+  && chmod 0755 /start.sh
 
 USER osmium
 WORKDIR /var/lib/osmium
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["/start.sh"]
+CMD ["osmium"]
+
