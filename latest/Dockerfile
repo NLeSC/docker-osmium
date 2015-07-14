@@ -6,7 +6,7 @@ RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh
 
 # Install runtime dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-      openjdk-7-jre-headless
+      openjdk-7-jre-headless openssh-client
 
 # Install build dependencies; install osmium; uninstall build dependencies.
 # Written in one command to yield a relatively small image
