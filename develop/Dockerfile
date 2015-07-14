@@ -1,31 +1,35 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER Joris Borgdorff <j.borgdorff@esciencecenter.nl>
+
+# Remove warnings during apt-get
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Create directories
 RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh
 
 # Install runtime dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-      openjdk-7-jre-headless
+      openjdk-7-jre-headless \
+      openssh-client \
+      openjdk-7-jdk \
+      gradle \
+      git \
+      ant
 
-# Install build dependencies; install osmium; uninstall build dependencies.
-# Written in one command to yield a relatively small image
-RUN apt-get update -y && apt-get install -y --no-install-recommends \
-      openjdk-7-jdk \
-      maven \
-      git \
-  && git clone https://github.com/NLeSC/osmium /usr/local/src/osmium \
-  && cd /usr/local/src/osmium \
-  && git checkout develop \
-  && mvn package \
-  && cp target/osmium-?.?.?.jar /var/lib/osmium/osmium.jar \
-  && cp joblauncher.yml-dist /var/lib/osmium/joblauncher.yml \
-  && apt-get --purge autoremove -y \
-      openjdk-7-jdk \
-      maven \
-      git \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/local/src/osmium ~/.m2
+RUN git clone https://github.com/NLeSC/xenon /usr/local/src/xenon \
+    && cd /usr/local/src/xenon \
+    && git checkout develop \
+    && ant
+
+RUN git clone https://github.com/NLeSC/osmium.git /usr/local/src/osmium \
+    && cd /usr/local/src/osmium \
+    && git checkout gradle \
+    && cp /usr/local/src/xenon/lib/*.jar lib \
+    && cp /usr/local/src/xenon/lib/*/*.jar lib \
+    && cp /usr/local/src/xenon/dist/nlesc-xenon-*/lib/xenon-*.jar lib/xenon.jar \
+    && gradle fatJar \
+    && cp build/libs/osmium-all-*.jar /var/lib/osmium/osmium.jar \
+    && cp joblauncher.yml-dist /var/lib/osmium/joblauncher.yml
 
 COPY ./start.sh /
 
@@ -39,4 +43,3 @@ USER osmium
 WORKDIR /var/lib/osmium
 ENTRYPOINT ["/start.sh"]
 CMD ["osmium"]
-
