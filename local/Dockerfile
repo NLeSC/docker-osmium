@@ -8,8 +8,7 @@ COPY ./ssh_known_hosts /var/lib/osmium/.ssh/known_hosts
 COPY ./joblauncher.yml /var/lib/osmium/joblauncher.yml
 
 RUN chown -R osmium:osmium /var/lib/osmium \
-  && chmod 0600 /var/lib/osmium/.ssh/id_rsa \
-               /var/lib/osmium/.ssh/id_rsa.pub
+  && chmod 0600 /var/lib/osmium/.ssh/id_rsa*
 
 USER osmium
 
