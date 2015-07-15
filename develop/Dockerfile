@@ -23,12 +23,12 @@ RUN git clone https://github.com/NLeSC/xenon /usr/local/src/xenon \
 
 RUN git clone https://github.com/NLeSC/osmium.git /usr/local/src/osmium \
     && cd /usr/local/src/osmium \
-    && git checkout gradle \
+    && git checkout 0bca57af241c2c2cc5f2880f7b8afc44c97c21d7 \
     && cp /usr/local/src/xenon/lib/*.jar lib \
     && cp /usr/local/src/xenon/lib/*/*.jar lib \
     && cp /usr/local/src/xenon/dist/nlesc-xenon-*/lib/xenon-*.jar lib/xenon.jar \
     && gradle fatJar \
-    && cp build/libs/osmium-all-*.jar /var/lib/osmium/osmium.jar \
+    && cp build/libs/osmium-*-all.jar /var/lib/osmium/osmium.jar \
     && cp joblauncher.yml-dist /var/lib/osmium/joblauncher.yml
 
 # Set permissions
@@ -38,4 +38,4 @@ RUN groupadd -r osmium \
 
 USER osmium
 WORKDIR /var/lib/osmium
-CMD ["/usr/bin/java", "-jar", "osmium.jar", "server", "joblauncher.yml", "osmium"]
+CMD ["/usr/bin/java", "-jar", "osmium.jar", "server", "joblauncher.yml"]
