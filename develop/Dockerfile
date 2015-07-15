@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Create directories
 RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh
 
-# Install runtime dependencies
+# Install runtime dependencies (Debian Jessie is needed for gradle)
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
       openjdk-7-jre-headless \
       openssh-client \
@@ -31,15 +31,11 @@ RUN git clone https://github.com/NLeSC/osmium.git /usr/local/src/osmium \
     && cp build/libs/osmium-all-*.jar /var/lib/osmium/osmium.jar \
     && cp joblauncher.yml-dist /var/lib/osmium/joblauncher.yml
 
-COPY ./start.sh /
-
 # Set permissions
 RUN groupadd -r osmium \
   && useradd -d /var/lib/osmium -g osmium osmium \
-  && chown -R osmium:osmium /var/lib/osmium \
-  && chmod 0755 /start.sh
+  && chown -R osmium:osmium /var/lib/osmium
 
 USER osmium
 WORKDIR /var/lib/osmium
-ENTRYPOINT ["/start.sh"]
-CMD ["osmium"]
+CMD ["/usr/bin/java", "-jar", "osmium.jar", "server", "joblauncher.yml", "osmium"]

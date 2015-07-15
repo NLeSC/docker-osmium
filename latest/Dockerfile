@@ -26,16 +26,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/local/src/osmium ~/.m2
 
-COPY ./start.sh /
-
 # Set permissions
 RUN groupadd -r osmium \
   && useradd -d /var/lib/osmium -g osmium osmium \
-  && chown -R osmium:osmium /var/lib/osmium \
-  && chmod 0755 /start.sh
+  && chown -R osmium:osmium /var/lib/osmium
 
 USER osmium
 WORKDIR /var/lib/osmium
-ENTRYPOINT ["/start.sh"]
-CMD ["osmium"]
-
+CMD ["/usr/bin/java", "-server", "-Xms10m", "-jar", "osmium.jar", "server", "joblauncher.yml", "osmium"]
