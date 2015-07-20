@@ -17,3 +17,12 @@ SSH keys can be generated with:
     ssh-keygen -f ssh_key -N ""
 
 SSH known hosts and SSH config may be empty, depending on your preferences.
+
+Create base images by running
+
+    make
+
+and the local image by running
+
+    make local
+
