@@ -2,7 +2,7 @@ FROM debian:wheezy
 MAINTAINER Joris Borgdorff <j.borgdorff@esciencecenter.nl>
 
 # Create directories
-RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh
+RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh /var/lib/osmium/sandbox
 
 # Install runtime dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \

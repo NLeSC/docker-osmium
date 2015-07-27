@@ -5,7 +5,7 @@ MAINTAINER Joris Borgdorff <j.borgdorff@esciencecenter.nl>
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Create directories
-RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh
+RUN mkdir -p /usr/local/src /var/lib/osmium/.ssh /var/lib/osmium/sandbox
 
 # Install runtime dependencies (Debian Jessie is needed for gradle)
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
